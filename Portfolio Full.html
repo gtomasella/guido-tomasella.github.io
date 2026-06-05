@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guido Tomasella - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Geist', sans-serif;
+            background-color: #0a1428;
+            color: #f0f0f0;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 20, 40, 0.3);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            max-width: 900px;
+            padding: 2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            font-weight: 500;
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            line-height: 1.5;
+        }
+
+        @keyframes fadeInSubtitle {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .hero-tagline {
+            font-size: clamp(1rem, 1.8vw, 1.3rem);
+            color: #a0a0a0;
+            margin-bottom: 3rem;
+            font-weight: 400;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+            line-height: 1.6;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .btn {
+            padding: 0.9rem 2.2rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border: 2px solid #00d4ff;
+            background-color: transparent;
+            color: #00d4ff;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #00d4ff;
+            z-index: -1;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            color: #0a1428;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.6);
+        }
+
+        .btn:hover::before {
+            transform: scaleX(1);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: #00d4ff;
+            color: #0a1428;
+            border-color: #00d4ff;
+        }
+
+        .btn-primary::before {
+            background-color: #00a8cc;
+        }
+
+        .btn-primary:hover {
+            color: #f0f0f0;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        .scroll-text {
+            font-size: 0.95rem;
+            color: #a0a0a0;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        .scroll-arrow {
+            display: inline-block;
+            font-size: 1.5rem;
+            color: #00d4ff;
+            animation: bounceArrow 2s ease-in-out infinite;
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(12px);
+            }
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 10;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #00d4ff;
+            background-color: rgba(0, 212, 255, 0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            color: #00d4ff;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+        }
+
+        /* ===== SECTIONS COMMON ===== */
+        section {
+            position: relative;
+            z-index: 4;
+            background-color: #0a1428;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            letter-spacing: -0.01em;
+        }
+
+        .section-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Scroll animation for sections */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== SECTION 1: WHAT I DO ===== */
+        #what-i-do {
+            background-color: #0f1a2e;
+            padding: 6rem 2rem;
+        }
+
+        .what-i-do-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .what-i-do-card {
+            background-color: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: 12px;
+            transition: all 0.4s ease;
+        }
+
+        .what-i-do-card:hover {
+            background-color: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.15);
+        }
+
+        .what-i-do-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .what-i-do-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: #00d4ff;
+        }
+
+        .what-i-do-card ul {
+            list-style: none;
+        }
+
+        .what-i-do-card li {
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            color: #b0b0b0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .what-i-do-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        /* ===== SECTION 2: EXPERIENCE ===== */
+        #experience {
+            background-color: #0a1428;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .experience-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .experience-scroll {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            padding: 2rem 0;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+        }
+
+        .experience-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .experience-scroll::-webkit-scrollbar-track {
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .experience-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0, 212, 255, 0.4);
+            border-radius: 10px;
+        }
+
+        .experience-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 212, 255, 0.6);
+        }
+
+        .experience-card {
+            flex-shrink: 0;
+            width: min(100%, 450px);
+            background-color: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: 12px;
+            scroll-snap-align: start;
+            transition: all 0.4s ease;
+        }
+
+        .experience-card:hover {
+            background-color: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.15);
+        }
+
+        .experience-card h3 {
+            font-size: 1.3rem;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-card .role {
+            font-size: 1rem;
+            color: #b0b0b0;
+            margin-bottom: 0.3rem;
+        }
+
+        .experience-card .location {
+            font-size: 0.9rem;
+            color: #808080;
+            margin-bottom: 1.5rem;
+        }
+
+        .experience-card ul {
+            list-style: none;
+        }
+
+        .experience-card li {
+            font-size: 0.9rem;
+            margin-bottom: 0.6rem;
+            color: #a0a0a0;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .experience-card li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+        }
+
+        /* ===== SECTION 3: PROJECTS ===== */
+        #projects {
+            background-color: #0f1a2e;
+            padding: 6rem 2rem;
+        }
+
+        .projects-scroll {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            padding: 2rem 0;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+        }
+
+        .projects-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .projects-scroll::-webkit-scrollbar-track {
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .projects-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0, 212, 255, 0.4);
+            border-radius: 10px;
+        }
+
+        .projects-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 212, 255, 0.6);
+        }
+
+        .project-card {
+            flex-shrink: 0;
+            width: min(100%, 450px);
+            background-color: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: 12px;
+            scroll-snap-align: start;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            background-color: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.15);
+        }
+
+        .project-card h3 {
+            font-size: 1.3rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .project-card .description {
+            font-size: 0.95rem;
+            color: #b0b0b0;
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+        }
+
+        .project-card .tech-stack {
+            font-size: 0.85rem;
+            color: #808080;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .project-card .metric {
+            font-size: 0.95rem;
+            color: #00d4ff;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .project-link {
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            gap: 1rem;
+        }
+
+        /* ===== SECTION 4: IMPACT ===== */
+        #impact {
+            background-color: #0a1428;
+            background: linear-gradient(135deg, #0a1428 0%, #0f1a2e 100%);
+            padding: 6rem 2rem;
+        }
+
+        .impact-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .impact-item {
+            background-color: rgba(0, 212, 255, 0.05);
+            border-left: 4px solid #00d4ff;
+            padding: 2rem;
+            border-radius: 8px;
+            transition: all 0.4s ease;
+        }
+
+        .impact-item:hover {
+            background-color: rgba(0, 212, 255, 0.1);
+            transform: translateX(8px);
+        }
+
+        .impact-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .impact-label {
+            font-size: 0.95rem;
+            color: #b0b0b0;
+        }
+
+        /* ===== SECTION 5: EDUCATION ===== */
+        #education {
+            background-color: #0f1a2e;
+            padding: 6rem 2rem;
+        }
+
+        .education-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .education-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .education-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateX(-1px);
+        }
+
+        .education-item {
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .education-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .education-item:nth-child(odd) {
+            margin-left: 0;
+            margin-right: auto;
+            width: calc(50% - 2rem);
+            text-align: right;
+            padding-right: 2rem;
+        }
+
+        .education-item:nth-child(even) {
+            margin-left: auto;
+            margin-right: 0;
+            width: calc(50% - 2rem);
+            text-align: left;
+            padding-left: 2rem;
+        }
+
+        .education-content {
+            background-color: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .education-content h3 {
+            font-size: 1.2rem;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-content .degree {
+            font-size: 0.95rem;
+            color: #b0b0b0;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-content .year {
+            font-size: 0.85rem;
+            color: #808080;
+        }
+
+        @media (max-width: 768px) {
+            .education-timeline::before {
+                left: 0;
+            }
+
+            .education-item:nth-child(odd),
+            .education-item:nth-child(even) {
+                width: 100%;
+                text-align: left;
+                margin-left: 2rem;
+                margin-right: 0;
+                padding: 0 0 0 2rem;
+            }
+        }
+
+        /* ===== SECTION 6: CONTACT ===== */
+        #contact {
+            background-color: #050c18;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .contact-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-email {
+            font-size: 1.3rem;
+            color: #00d4ff;
+            margin-bottom: 2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .contact-email:hover {
+            text-decoration: underline;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .contact-link {
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 6px;
+        }
+
+        .contact-link:hover {
+            background-color: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.6);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: #808080;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        /* ===== DARK/LIGHT MODE ===== */
+        body.dark-mode {
+            background-color: #0a1428;
+            color: #f0f0f0;
+        }
+
+        body.dark-mode .overlay {
+            background-color: rgba(10, 20, 40, 0.3);
+        }
+
+        body.light-mode {
+            background-color: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        body.light-mode .overlay {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        body.light-mode video {
+            opacity: 0.4;
+            mix-blend-mode: overlay;
+        }
+
+        body.light-mode section {
+            background-color: #ffffff;
+        }
+
+        body.light-mode #what-i-do {
+            background-color: #f0f0f0;
+        }
+
+        body.light-mode #projects {
+            background-color: #f0f0f0;
+        }
+
+        body.light-mode #education {
+            background-color: #f0f0f0;
+        }
+
+        body.light-mode #contact {
+            background-color: #e8e8e8;
+        }
+
+        body.light-mode .what-i-do-card,
+        body.light-mode .experience-card,
+        body.light-mode .project-card,
+        body.light-mode .impact-item,
+        body.light-mode .education-content {
+            background-color: rgba(0, 212, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        body.light-mode .section-title,
+        body.light-mode .hero-title {
+            color: #1a1a1a;
+        }
+
+        body.light-mode .what-i-do-card h3,
+        body.light-mode .experience-card h3,
+        body.light-mode .project-card h3,
+        body.light-mode .education-content h3 {
+            color: #00a8cc;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .section-inner {
+                padding: 3rem 1.5rem;
+            }
+
+            .section-title {
+                margin-bottom: 2rem;
+            }
+
+            .what-i-do-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .experience-card,
+            .project-card {
+                width: calc(100vw - 2rem);
+            }
+
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-links {
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                margin-bottom: 0.8rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .scroll-indicator {
+                display: none;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .scroll-arrow {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <video autoplay="" muted="" loop="" playsinline="">
+        <source src="uploads/A_dynamic_camera_flight_throug.mp4" type="video/mp4">
+    </video>
+
+    <div class="overlay"></div>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Guido Tomasella</h1>
+            <p class="hero-subtitle">Data Governance • Data Engineering • AI Transformation</p>
+            <p class="hero-tagline">Building the data foundation that makes AI actually work in production</p>
+            
+            <div class="button-group">
+                <a href="cv.pdf" class="btn btn-primary" download>Download CV</a>
+                <a href="https://github.com/guido-tomasella" class="btn" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://linkedin.com/in/guido-tomasella-06222885" class="btn" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-indicator">
+        <div class="scroll-text">Scroll to explore</div>
+        <div class="scroll-arrow">↓</div>
+    </div>
+
+    <!-- SECTION 1: WHAT I DO -->
+    <section id="what-i-do">
+        <div class="section-inner">
+            <h2 class="section-title fade-in-up">What I Do</h2>
+            <div class="what-i-do-grid">
+                <div class="what-i-do-card fade-in-up">
+                    <span class="what-i-do-icon">🔐</span>
+                    <h3>Data Governance & Quality</h3>
+                    <ul>
+                        <li>Frameworks from scratch (USE/BUILD/OPERATE, LGPD)</li>
+                        <li>DataHub 500k+ assets, Federated Governance</li>
+                        <li>PySpark observability −40% incidents</li>
+                    </ul>
+                </div>
+                <div class="what-i-do-card fade-in-up">
+                    <span class="what-i-do-icon">⚙️</span>
+                    <h3>Data Engineering</h3>
+                    <ul>
+                        <li>300+ pipelines (Python/PySpark/Airflow/GCP)</li>
+                        <li>95% SLA, hundreds of TB/month</li>
+                        <li>BigQuery, REST APIs, Data Contracts</li>
+                    </ul>
+                </div>
+                <div class="what-i-do-card fade-in-up">
+                    <span class="what-i-do-icon">🤖</span>
+                    <h3>AI Leadership</h3>
+                    <ul>
+                        <li>MCP agents in production (Jira Auditor, Auto-Doc, Roadmap)</li>
+                        <li>−75% delivery cycles, −50% overhead</li>
+                        <li>20+ squads, 4 LatAm countries</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: EXPERIENCE -->
+    <section id="experience">
+        <div class="experience-wrapper">
+            <h2 class="section-title fade-in-up">Experience</h2>
+            <div class="experience-scroll">
+                <div class="experience-card fade-in-up">
+                    <h3>Scanntech</h3>
+                    <div class="role">Data Quality & Governance Manager (CDAO)</div>
+                    <div class="location">Latin America (Remote) — 2024–present</div>
+                    <ul>
+                        <li>AI Adoption Framework (USE/BUILD/OPERATE)</li>
+                        <li>Production agents: Jira Auditor, Auto-Doc, Roadmap Generator</li>
+                        <li>−75% delivery cycles, −50% overhead, 20+ squads</li>
+                    </ul>
+                </div>
+                <div class="experience-card fade-in-up">
+                    <h3>Telecom Argentina</h3>
+                    <div class="role">Data Governance Team Leader & Tech Lead</div>
+                    <div class="location">Argentina — 2021–2024</div>
+                    <ul>
+                        <li>300+ ETL/ELT pipelines (Python, Airflow, GCP)</li>
+                        <li>Real-time BigQuery dashboards, 50+ stakeholders</li>
+                        <li>100% team adoption, 10 business areas</li>
+                    </ul>
+                </div>
+                <div class="experience-card fade-in-up">
+                    <h3>Telecom Argentina</h3>
+                    <div class="role">Team Leader Headend</div>
+                    <div class="location">Argentina — 2019–2021</div>
+                    <ul>
+                        <li>Digital transformation toward data-centric model</li>
+                        <li>100% staff adoption, union negotiations</li>
+                        <li>Automated pipelines + KPI dashboards</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: PROJECTS -->
+    <section id="projects">
+        <div class="experience-wrapper">
+            <h2 class="section-title fade-in-up">Featured Projects</h2>
+            <div class="projects-scroll">
+                <div class="project-card fade-in-up">
+                    <h3>MCP Data Agents</h3>
+                    <div class="description">Jira Auditor, Auto-Documentation, Roadmap Generator</div>
+                    <div class="tech-stack"><strong>Tech:</strong> MCP, Anthropic Claude API, DataHub</div>
+                    <div class="metric">−40% incidents, 100% CDEs documented</div>
+                    <a href="https://github.com/guido-tomasella" class="project-link" target="_blank">GitHub →</a>
+                </div>
+                <div class="project-card fade-in-up">
+                    <h3>LangGraph RAG System</h3>
+                    <div class="description">Hybrid RAG with BM25, dense embeddings, RRF, CRAG loop, ReAct</div>
+                    <div class="tech-stack"><strong>Tech:</strong> LangGraph, Qdrant, Langfuse, FastAPI</div>
+                    <div class="metric">287 tests, recall@k=1.0, +0.334 answer_match</div>
+                    <a href="https://github.com/guido-tomasella" class="project-link" target="_blank">GitHub →</a>
+                </div>
+                <div class="project-card fade-in-up">
+                    <h3>Data Governance Framework</h3>
+                    <div class="description">USE/BUILD/OPERATE playbooks, gates, Shadow AI mitigation</div>
+                    <div class="tech-stack"><strong>Tech:</strong> YAML, Policies, Assessment templates</div>
+                    <div class="metric">Used in 20+ squads, 4 LatAm countries</div>
+                    <a href="https://github.com/guido-tomasella" class="project-link" target="_blank">GitHub →</a>
+                </div>
+                <div class="project-card fade-in-up">
+                    <h3>PySpark Quality Framework</h3>
+                    <div class="description">CDE profiling, dynamic thresholds, real-time alerting</div>
+                    <div class="tech-stack"><strong>Tech:</strong> PySpark, Python, Airflow integration</div>
+                    <div class="metric">−40% incidents, 100% coverage</div>
+                    <a href="https://github.com/guido-tomasella" class="project-link" target="_blank">GitHub →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: IMPACT -->
+    <section id="impact">
+        <div class="impact-wrapper">
+            <h2 class="section-title fade-in-up">Impact</h2>
+            <div class="impact-grid">
+                <div class="impact-item fade-in-up">
+                    <div class="impact-number" data-target="75">0</div>
+                    <div class="impact-label">% reduction in delivery cycles</div>
+                </div>
+                <div class="impact-item fade-in-up">
+                    <div class="impact-number" data-target="50">0</div>
+                    <div class="impact-label">% reduction in administrative overhead</div>
+                </div>
+                <div class="impact-item fade-in-up">
+                    <div class="impact-number" data-target="40">0</div>
+                    <div class="impact-label">% reduction in data quality incidents</div>
+                </div>
+                <div class="impact-item fade-in-up">
+                    <div class="impact-number" data-target="500000">0</div>
+                    <div class="impact-label">data assets governed</div>
+                </div>
+                <div class="impact-item fade-in-up">
+                    <div class="impact-number" data-target="300">0</div>
+                    <div class="impact-label">production pipelines</div>
+                </div>
+                <div class="impact-item fade-in-up">
+                    <div class="impact-number" data-target="10">0</div>
+                    <div class="impact-label">Data Engineers trained & scaled</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: EDUCATION -->
+    <section id="education">
+        <div class="education-wrapper">
+            <h2 class="section-title fade-in-up">Education</h2>
+            <div class="education-timeline">
+                <div class="education-item fade-in-up">
+                    <div class="education-content">
+                        <h3>UCASAL</h3>
+                        <div class="degree">Master's in Data Science & AI</div>
+                        <div class="year">2025–2026 (in progress)</div>
+                    </div>
+                </div>
+                <div class="education-item fade-in-up">
+                    <div class="education-content">
+                        <h3>Universidad Nacional de La Matanza</h3>
+                        <div class="degree">Electrical, Electronic & Communications Engineering</div>
+                        <div class="year">2010–2020</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: CONTACT -->
+    <section id="contact">
+        <div class="contact-wrapper">
+            <h2 class="section-title fade-in-up">Let's work together</h2>
+            <a href="mailto:guido.thelion@gmail.com" class="contact-email fade-in-up">guido.thelion@gmail.com</a>
+            
+            <div class="contact-links fade-in-up">
+                <a href="https://linkedin.com/in/guido-tomasella-06222885" class="contact-link" target="_blank">LinkedIn</a>
+                <a href="https://github.com/guido-tomasella" class="contact-link" target="_blank">GitHub</a>
+                <a href="cv.pdf" class="contact-link" download>Download CV</a>
+            </div>
+
+            <div class="footer-text fade-in-up">
+                © 2024 Guido Tomasella. Built with care.
+            </div>
+        </div>
+    </section>
+
+    <button class="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark mode">
+        <span id="theme-icon">🌙</span>
+    </button>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.querySelector('.theme-toggle');
+        const body = document.body;
+        const themeIcon = document.getElementById('theme-icon');
+        const savedTheme = localStorage.getItem('theme') || 'dark-mode';
+
+        body.classList.remove('dark-mode', 'light-mode');
+        body.classList.add(savedTheme);
+        updateIcon(savedTheme);
+
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
+            const newTheme = currentTheme === 'dark-mode' ? 'light-mode' : 'dark-mode';
+
+            body.classList.remove(currentTheme);
+            body.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            themeIcon.textContent = theme === 'dark-mode' ? '🌙' : '☀️';
+        }
+
+        // Smooth scroll
+        document.documentElement.style.scrollBehavior = 'smooth';
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+        document.querySelectorAll('.education-item').forEach(el => observer.observe(el));
+
+        // Counter animation for impact numbers
+        const counterObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = entry.target;
+                    const finalValue = parseInt(target.dataset.target, 10);
+                    let currentValue = 0;
+                    const duration = 1500;
+                    const increment = finalValue / (duration / 16);
+
+                    const counter = setInterval(() => {
+                        currentValue += increment;
+                        if (currentValue >= finalValue) {
+                            target.textContent = finalValue.toLocaleString();
+                            clearInterval(counter);
+                        } else {
+                            target.textContent = Math.floor(currentValue).toLocaleString();
+                        }
+                    }, 16);
+
+                    counterObserver.unobserve(target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
+
+        // Video fallback
+        const video = document.querySelector('video');
+        if (video) {
+            video.addEventListener('error', function() {
+                document.querySelector('.overlay').style.backgroundColor = 'rgba(10, 20, 40, 0.6)';
+            });
+        }
+    </script>
+</body>
+</html>

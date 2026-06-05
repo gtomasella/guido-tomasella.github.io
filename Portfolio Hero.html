@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guido Tomasella - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Geist', sans-serif;
+            background-color: #0a1428;
+            color: #f0f0f0;
+        }
+
+        /* Video Background */
+        .hero {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* Dark overlay for readability */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 20, 40, 0.3);
+            z-index: 2;
+        }
+
+        /* Content container */
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            max-width: 900px;
+            padding: 2rem;
+            animation: fadeInContent 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInContent {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Title */
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            animation: slideUpTitle 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            letter-spacing: -0.02em;
+        }
+
+        @keyframes slideUpTitle {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Subtitle */
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            font-weight: 500;
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            animation: fadeInSubtitle 0.7s ease-out forwards;
+            animation-delay: 0.2s;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeInSubtitle {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Tagline */
+        .hero-tagline {
+            font-size: clamp(1rem, 1.8vw, 1.3rem);
+            color: #a0a0a0;
+            margin-bottom: 3rem;
+            font-weight: 400;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+            animation: fadeInSubtitle 0.7s ease-out forwards;
+            animation-delay: 0.3s;
+            line-height: 1.6;
+        }
+
+        /* Buttons container */
+        .button-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInButtons 0.7s ease-out forwards;
+            animation-delay: 0.4s;
+            margin-bottom: 4rem;
+        }
+
+        @keyframes fadeInButtons {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 0.9rem 2.2rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border: 2px solid #00d4ff;
+            background-color: transparent;
+            color: #00d4ff;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #00d4ff;
+            z-index: -1;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            color: #0a1428;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.6);
+        }
+
+        .btn:hover::before {
+            transform: scaleX(1);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Primary button variant */
+        .btn-primary {
+            background-color: #00d4ff;
+            color: #0a1428;
+            border-color: #00d4ff;
+        }
+
+        .btn-primary::before {
+            background-color: #00a8cc;
+        }
+
+        .btn-primary:hover {
+            color: #f0f0f0;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            text-align: center;
+            animation: fadeInScroll 0.7s ease-out forwards;
+            animation-delay: 0.6s;
+        }
+
+        @keyframes fadeInScroll {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 0.7;
+            }
+        }
+
+        .scroll-text {
+            font-size: 0.95rem;
+            color: #a0a0a0;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        .scroll-arrow {
+            display: inline-block;
+            font-size: 1.5rem;
+            color: #00d4ff;
+            animation: bounceArrow 2s ease-in-out infinite;
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(12px);
+            }
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 10;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #00d4ff;
+            background-color: rgba(0, 212, 255, 0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            color: #00d4ff;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Dark mode (default) */
+        body.dark-mode {
+            background-color: #0a1428;
+            color: #f0f0f0;
+        }
+
+        body.dark-mode .overlay {
+            background-color: rgba(10, 20, 40, 0.3);
+        }
+
+        body.dark-mode .hero-subtitle,
+        body.dark-mode .hero-tagline,
+        body.dark-mode .scroll-text {
+            color: #b0b0b0;
+        }
+
+        /* Light mode */
+        body.light-mode {
+            background-color: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        body.light-mode .overlay {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        body.light-mode video {
+            opacity: 0.4;
+            mix-blend-mode: overlay;
+        }
+
+        body.light-mode .hero-title {
+            color: #1a1a1a;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+        }
+
+        body.light-mode .hero-subtitle {
+            color: #555555;
+        }
+
+        body.light-mode .hero-tagline {
+            color: #666666;
+        }
+
+        body.light-mode .scroll-text {
+            color: #666666;
+        }
+
+        body.light-mode .btn {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        body.light-mode .btn:hover {
+            color: #0a1428;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .hero-title {
+                margin-bottom: 0.8rem;
+            }
+
+            .hero-subtitle {
+                font-size: clamp(1rem, 2vw, 1.3rem);
+                margin-bottom: 1rem;
+            }
+
+            .hero-tagline {
+                margin-bottom: 2rem;
+                font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+            }
+
+            .button-group {
+                gap: 1rem;
+                margin-bottom: 3rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1.8rem;
+                font-size: 0.95rem;
+            }
+
+            .theme-toggle {
+                top: 1.5rem;
+                right: 1.5rem;
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .scroll-indicator {
+                bottom: 1.5rem;
+            }
+
+            .scroll-text {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content {
+                padding: 1rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .scroll-indicator {
+                display: none;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .scroll-arrow {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <!-- Video Background -->
+    <video autoplay="" muted="" loop="" playsinline="">
+        <source src="uploads/A_dynamic_camera_flight_throug.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Dark overlay -->
+    <div class="overlay"></div>
+
+    <!-- Hero Content -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Guido Tomasella</h1>
+            <p class="hero-subtitle">Data Governance • Data Engineering • AI Transformation</p>
+            <p class="hero-tagline">Building the data foundation that makes AI actually work in production</p>
+            
+            <div class="button-group">
+                <a href="cv.pdf" class="btn btn-primary" download>Download CV</a>
+                <a href="https://github.com/guido-tomasella" class="btn" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://linkedin.com/in/guido-tomasella-06222885" class="btn" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator">
+        <div class="scroll-text">Scroll to explore</div>
+        <div class="scroll-arrow">↓</div>
+    </div>
+
+    <!-- Theme toggle button -->
+    <button class="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark mode">
+        <span id="theme-icon">🌙</span>
+    </button>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        const body = document.body;
+        const themeIcon = document.getElementById('theme-icon');
+        const savedTheme = localStorage.getItem('theme') || 'dark-mode';
+
+        // Set initial theme
+        body.classList.remove('dark-mode', 'light-mode');
+        body.classList.add(savedTheme);
+        updateIcon(savedTheme);
+
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
+            const newTheme = currentTheme === 'dark-mode' ? 'light-mode' : 'dark-mode';
+
+            body.classList.remove(currentTheme);
+            body.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            themeIcon.textContent = theme === 'dark-mode' ? '🌙' : '☀️';
+        }
+
+        // Smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+
+        // Video background fallback
+        const video = document.querySelector('video');
+        if (video) {
+            video.addEventListener('loadstart', function() {
+                console.log('Video loading...');
+            });
+            video.addEventListener('error', function() {
+                console.warn('Video failed to load');
+                document.querySelector('.overlay').style.backgroundColor = 'rgba(10, 20, 40, 0.6)';
+            });
+        }
+    </script>
+</body>
+</html>
