@@ -74,3 +74,52 @@ if (video.readyState >= 2) {
     video.addEventListener('canplay', startPlayback, { once: true });
     setTimeout(() => { runHeroTimeline(); }, 2500); // fallback if video is slow
 }
+
+/* ---------- scroll reveals ---------- */
+const observerOptions = { threshold: 0.2, rootMargin: '0px 0px -100px 0px' };
+
+function onEnter(el, fn) {
+    const obs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+            fn(el);
+            obs.unobserve(el);
+        }
+    }, observerOptions);
+    obs.observe(el);
+}
+
+if (!REDUCED) {
+    // Section titles: letter stagger + underline draw
+    document.querySelectorAll('.section-title').forEach(title => {
+        const chars = splitChars(title);
+        const underline = title.querySelector('.title-underline');
+        utils.set(chars, { opacity: 0, translateY: 30 });
+        onEnter(title, () => {
+            animate(chars, { opacity: 1, translateY: 0, delay: stagger(25), duration: 800, ease: 'outExpo' });
+            if (underline) animate(underline, { scaleX: [0, 1], duration: 900, delay: 300, ease: 'outQuart' });
+        });
+    });
+
+    // Grid cards: per-grid stagger
+    document.querySelectorAll('.pillars-grid, .experience-grid, .projects-grid, .metrics-grid').forEach(grid => {
+        const items = Array.from(grid.children);
+        utils.set(items, { opacity: 0, translateY: 50 });
+        onEnter(grid, () => {
+            animate(items, { opacity: 1, translateY: 0, delay: stagger(120), duration: 900, ease: 'outExpo' });
+        });
+    });
+
+    // Education timeline: alternate slide-in
+    document.querySelectorAll('.education-item').forEach((item, i) => {
+        utils.set(item, { opacity: 0, translateX: i % 2 === 0 ? -40 : 40 });
+        onEnter(item, () => {
+            animate(item, { opacity: 1, translateX: 0, duration: 800, ease: 'outExpo' });
+        });
+    });
+
+    // Contact block
+    document.querySelectorAll('.contact-email, .contact-links, .footer-text').forEach(el => {
+        utils.set(el, { opacity: 0, translateY: 24 });
+        onEnter(el, () => animate(el, { opacity: 1, translateY: 0, duration: 800, ease: 'outExpo' }));
+    });
+}
