@@ -173,7 +173,6 @@
         .btn:hover {
             color: #0a1428;
             box-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
-            transform: translateY(-3px);
         }
 
         .btn:hover::before {

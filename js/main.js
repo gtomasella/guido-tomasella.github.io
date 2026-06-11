@@ -139,3 +139,29 @@ document.querySelectorAll('[data-target]').forEach(el => {
         });
     });
 });
+
+/* ---------- hover micro-interactions ---------- */
+if (!REDUCED && window.matchMedia('(pointer: fine)').matches) {
+    // Magnetic buttons
+    document.querySelectorAll('.btn, .contact-link').forEach(btn => {
+        btn.addEventListener('mousemove', e => {
+            const r = btn.getBoundingClientRect();
+            animate(btn, {
+                x: (e.clientX - r.left - r.width / 2) * 0.25,
+                y: (e.clientY - r.top - r.height / 2) * 0.25,
+                duration: 200, ease: 'outQuad'
+            });
+        });
+        btn.addEventListener('mouseleave', () => {
+            animate(btn, { x: 0, y: 0, duration: 700, ease: 'outElastic(1, .45)' });
+        });
+    });
+
+    // Pillar icon pop on card hover
+    document.querySelectorAll('.pillar').forEach(card => {
+        const icon = card.querySelector('.pillar-icon');
+        card.addEventListener('mouseenter', () => {
+            animate(icon, { scale: [1, 1.2, 1], rotate: [0, -8, 0], duration: 600, ease: 'outQuad' });
+        });
+    });
+}
