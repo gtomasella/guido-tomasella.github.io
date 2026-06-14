@@ -1,12 +1,13 @@
 import './style.css';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import content from '../content/content.en.json';
 import { SceneManager } from './scene/SceneManager.js';
 import { NeuralField } from './scene/NeuralField.js';
 import { buildSections } from './sections.js';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const small = window.matchMedia('(max-width: 700px)').matches;
@@ -64,11 +65,11 @@ if (reduced) {
   gsap.to('.topbar', { opacity: 1, y: 0, duration: 1, scrollTrigger: { trigger: '#hero', start: 'top 80%' } });
   gsap.to('#hero [data-hero]', { opacity: 1, y: 0, duration: 1, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: '#hero', start: 'top 78%' } });
 
-  // Contact payoff: GT -> "LET'S BUILD".
+  // Contact payoff: GT -> "LET'S BUILD" (completes as the contact section snaps to the top).
   ScrollTrigger.create({
     trigger: '#contact',
-    start: 'top 70%',
-    end: 'bottom bottom',
+    start: 'top bottom',
+    end: 'top top',
     scrub: 1,
     onUpdate: (self) => field.setSegment(SHAPE.GT, SHAPE.BUILD, self.progress),
   });
@@ -78,80 +79,99 @@ if (reduced) {
     gsap.from(el, { y: 32, opacity: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 86%' } });
   });
 
-  // Pinned "Selected work": exactly ONE gesture (a scroll notch or an arrow key) = one card.
-  // The section pins; while active we intercept wheel/keys and step discretely, releasing at the ends.
+  // ----- Discrete section stepper from the hero down -----
+  // One gesture (wheel notch or arrow) advances one stop; each move is a SMOOTH animated
+  // scroll, so the particle field keeps flowing as the page travels between sections.
+  // Project cards are in-place swaps (the screen holds); everything else is a scroll.
   if (!small) {
     const stageEl = document.querySelector('.proj-stage');
-    const cards = gsap.utils.toArray('.proj-stage .proj');
-    if (stageEl && cards.length > 1) {
+    const projCards = gsap.utils.toArray('.proj-stage .proj');
+    if (stageEl && projCards.length) {
       stageEl.classList.add('proj-stage--pinned');
-      const n = cards.length;
-      let idx = 0;
-      let active = false;
-      let lock = false;
-
-      function syncCards() {
-        cards.forEach((c, i) => gsap.set(c, { autoAlpha: i === idx ? 1 : 0, y: 0 }));
-      }
-      function go(next) {
-        if (next < 0 || next > n - 1 || next === idx) return;
-        const dir = next > idx ? 1 : -1;
-        gsap.to(cards[idx], { autoAlpha: 0, y: -30 * dir, duration: 0.3, ease: 'power2.out' });
-        gsap.fromTo(cards[next], { autoAlpha: 0, y: 30 * dir }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' });
-        idx = next;
-      }
-      syncCards();
-
-      const st = ScrollTrigger.create({
-        trigger: '#projects',
-        start: 'top top',
-        end: () => `+=${window.innerHeight}`,
-        pin: true,
-        anticipatePin: 1,
-        onToggle: (self) => {
-          active = self.isActive;
-          if (active) {
-            idx = self.direction === 1 ? 0 : n - 1;
-            syncCards();
-          }
-        },
-      });
-
-      const exit = (down) => {
-        active = false;
-        window.scrollTo({ top: down ? st.end + 2 : Math.max(0, st.start - 2), behavior: 'auto' });
-      };
-      const tryStep = (down) => {
-        if (down && idx < n - 1) { go(idx + 1); return true; }
-        if (!down && idx > 0) { go(idx - 1); return true; }
-        return false; // at a boundary -> release the pin
-      };
-
-      window.addEventListener(
-        'wheel',
-        (e) => {
-          if (!active) return;
-          e.preventDefault();
-          if (lock) return;
-          lock = true;
-          setTimeout(() => (lock = false), 650);
-          if (!tryStep(e.deltaY > 0)) exit(e.deltaY > 0);
-        },
-        { passive: false }
-      );
-
-      window.addEventListener('keydown', (e) => {
-        if (!active) return;
-        const down = e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ';
-        const up = e.key === 'ArrowUp' || e.key === 'PageUp';
-        if (!down && !up) return;
-        e.preventDefault();
-        if (lock) return;
-        lock = true;
-        setTimeout(() => (lock = false), 300);
-        if (!tryStep(down)) exit(down);
-      });
+      gsap.set(projCards, { autoAlpha: 0 });
+      gsap.set(projCards[0], { autoAlpha: 1, y: 0 });
     }
+
+    const stops = [
+      { sel: '#hero' },
+      { sel: '#hats' },
+      { sel: '#amplify' },
+      { sel: '#work' },
+      ...projCards.map((_, i) => ({ sel: '#projects', card: i })),
+      { sel: '#contact' },
+    ];
+
+    let step = 0;
+    let active = false;
+    let lock = false;
+    let curCard = 0;
+    const topOf = (sel) => {
+      const el = document.querySelector(sel);
+      return el ? Math.round(el.getBoundingClientRect().top + window.scrollY) : 0;
+    };
+
+    function swapCard(i) {
+      if (i === curCard || !projCards[i]) return;
+      const dir = i > curCard ? 1 : -1;
+      gsap.to(projCards[curCard], { autoAlpha: 0, y: -26 * dir, duration: 0.3, ease: 'power2.out' });
+      gsap.fromTo(projCards[i], { autoAlpha: 0, y: 26 * dir }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' });
+      curCard = i;
+    }
+
+    function applyStop() {
+      const s = stops[step];
+      if (s.card !== undefined) {
+        const target = topOf('#projects');
+        if (Math.abs(window.scrollY - target) > 8) gsap.to(window, { scrollTo: target, duration: 0.9, ease: 'power2.inOut' });
+        swapCard(s.card);
+      } else {
+        gsap.to(window, { scrollTo: topOf(s.sel), duration: 1, ease: 'power2.inOut' });
+      }
+    }
+
+    function move(dir) {
+      const next = step + dir;
+      if (next < 0) {
+        active = false; // hand control back to the continuous intro
+        gsap.to(window, { scrollTo: Math.max(0, topOf('#hero') - window.innerHeight * 0.75), duration: 0.7, ease: 'power2.inOut' });
+        return;
+      }
+      if (next > stops.length - 1) return;
+      step = next;
+      applyStop();
+    }
+
+    const gesture = (dir) => {
+      if (lock) return;
+      lock = true;
+      setTimeout(() => (lock = false), 1050);
+      move(dir);
+    };
+
+    // Engage the stepper while we're at/below the hero; release it back into the intro above.
+    ScrollTrigger.create({
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      onEnter: () => { active = true; step = 0; },
+      onEnterBack: () => { active = true; },
+      onLeaveBack: () => { active = false; },
+    });
+
+    window.addEventListener('wheel', (e) => {
+      if (!active) return;
+      e.preventDefault();
+      gesture(e.deltaY > 0 ? 1 : -1);
+    }, { passive: false });
+
+    window.addEventListener('keydown', (e) => {
+      if (!active) return;
+      const down = e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ';
+      const up = e.key === 'ArrowUp' || e.key === 'PageUp';
+      if (!down && !up) return;
+      e.preventDefault();
+      gesture(down ? 1 : -1);
+    });
   }
 
   // Hide the scroll cue once the journey begins.
