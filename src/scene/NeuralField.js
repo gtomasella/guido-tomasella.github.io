@@ -4,15 +4,24 @@ import { dispersedCloud, sampleText } from './shapes.js';
 
 const VERT = /* glsl */ `
   attribute float aSize;
-  attribute vec3 aColor;
   attribute float aSeed;
   uniform float uTime;
   uniform float uPixelRatio;
   uniform float uMotion;
   varying vec3 vColor;
   varying float vFade;
+  // Continuous "Aurora" colour flow — swap these three colours to change the palette.
+  vec3 auroraFlow(float t) {
+    vec3 cA = vec3(0.13, 0.83, 1.0);  // cyan  #22d3ff
+    vec3 cB = vec3(0.49, 0.36, 1.0);  // violet #7c5cff
+    vec3 cC = vec3(1.0, 0.30, 0.62);  // magenta #ff4d9d
+    float seg = fract(t) * 3.0;
+    if (seg < 1.0) return mix(cA, cB, seg);
+    if (seg < 2.0) return mix(cB, cC, seg - 1.0);
+    return mix(cC, cA, seg - 2.0);
+  }
   void main() {
-    vColor = aColor;
+    vColor = auroraFlow(aSeed * 0.7 + uTime * 0.05 * uMotion);
     vec3 p = position;
     float ph = aSeed * 6.2831853;
     p.x += sin(uTime * 0.45 + ph) * 0.04 * uMotion;
