@@ -139,12 +139,12 @@ export class SceneManager {
     const t = this.clock.elapsedTime;
     this.controls.update();
     if (!this.reduced) {
-      // Lusion-style parallax: steer the camera slightly toward the pointer.
+      // Lusion-style parallax: rotate the camera VIEW toward the pointer (NOT its position),
+      // so the field never shrinks and OrbitControls' state isn't corrupted by feedback.
       this._tx += (this._px - this._tx) * 0.06;
       this._ty += (this._py - this._ty) * 0.06;
-      this.camera.position.x += this._tx * 0.7;
-      this.camera.position.y += this._ty * 0.7;
-      this.camera.lookAt(0, 0, 0);
+      this.camera.rotateY(this._tx * 0.1);
+      this.camera.rotateX(-this._ty * 0.1);
     }
     if (this.dust && !this.reduced) this.dust.rotation.y += dt * 0.01;
     for (const s of this.systems) s.update?.(t, dt, this);
