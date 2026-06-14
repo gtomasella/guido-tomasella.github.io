@@ -41,8 +41,8 @@ export class SceneManager {
       enableZoom: false,
       enablePan: false,
       enableDamping: true,
-      dampingFactor: 0.08,
-      rotateSpeed: 0.5,
+      dampingFactor: 0.1,
+      rotateSpeed: 1.5,
       autoRotate: !this.reduced,
       autoRotateSpeed: 1.3,
     });
