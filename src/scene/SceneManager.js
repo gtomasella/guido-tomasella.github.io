@@ -44,7 +44,7 @@ export class SceneManager {
       dampingFactor: 0.08,
       rotateSpeed: 0.5,
       autoRotate: !this.reduced,
-      autoRotateSpeed: 0.45,
+      autoRotateSpeed: 1.3,
     });
 
     this._addDust();
@@ -118,12 +118,14 @@ export class SceneManager {
   resize() {
     const w = this.container.clientWidth || window.innerWidth;
     const h = this.container.clientHeight || window.innerHeight;
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(w, h);
     this.composer.setSize(w, h);
     this.bloom.setSize(w, h);
     this.labelRenderer.setSize(w, h);
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
+    for (const s of this.systems) s.onResize?.(this);
   }
 
   tick() {

@@ -1,9 +1,9 @@
 {
   "identity": {
     "name": "Guido Tomasella",
-    "kicker": "Data governance · Data engineering · AI leadership",
+    "kicker": "Data Governance · Data Quality · Data Engineering · AI",
     "roles": ["Data Manager", "Tech Lead"],
-    "tagline": "I lead data quality, governance and engineering — and amplify all of it with AI and agents."
+    "tagline": "I make data trustworthy, then build the agents that keep it that way."
   },
   "hats": {
     "manager": { "label": "Manager", "disciplines": ["Data", "Data Quality", "Data Governance"] },
@@ -32,56 +32,53 @@
     ]
   },
   "amplifier": [
-    { "branch": "Data Governance", "message": "Governance that scales because agents consume a living knowledge graph." },
-    { "branch": "Data Quality", "message": "Quality shifts from reactive to proactive with AI-assisted observability." },
-    { "branch": "Data Engineering", "message": "Engineering accelerates with copilots and autonomous documentation." },
-    { "branch": "AI", "message": "AI in production, responsibly — agents that audit, document and plan." }
+    { "branch": "Data Governance", "message": "Policies stop living in slide decks — agents read the catalog, flag drift, and write the documentation themselves." },
+    { "branch": "Data Quality", "message": "Checks run ahead of the pipeline, not after the complaint — rules catch bad data before it ships." },
+    { "branch": "Data Engineering", "message": "Pipelines that used to need a ticket and a week now get an agent that audits, drafts, and proposes the fix." },
+    { "branch": "AI", "message": "Claude and LangChain aren't side projects — they're teammates wired into governance, roadmaps, and Jira itself." }
   ],
   "experience": [
     {
       "company": "Scanntech",
       "role": "Data Quality & Governance Manager (CDAO)",
       "dates": "2024 — present",
-      "summary": "Founded and led a federated data governance practice across LatAm, turning governance into a business enabler powered by agents."
+      "summary": "Built the data governance practice from zero and federated it across five LatAm countries, then put AI agents on top to keep it running itself."
     },
     {
       "company": "Telecom Argentina",
       "role": "Data Governance Team Leader & Tech Lead",
       "dates": "2021 — 2024",
-      "summary": "Architected the data platform and the first formal governance layer over a multi-terabyte estate."
+      "summary": "Brought order to a multi-terabyte data estate with hundreds of pipelines and stood up the company's first real governance layer."
     },
     {
       "company": "Telecom Argentina",
       "role": "Team Leader — Headend",
       "dates": "2019 — 2021",
-      "summary": "Led the shift to a data-centric operating model for the video datacenter."
+      "summary": "Turned a video datacenter's operations into a data-centric practice, setting the foundation for everything that came after."
     }
   ],
   "projects": [
     {
-      "title": "Project title",
-      "description": "Short description of what it does and the problem it solves.",
-      "tech": "Tech, stack",
-      "link": "https://github.com/guido-tomasella",
-      "placeholder": true
+      "title": "MCP Data Agents",
+      "description": "A small fleet of autonomous agents — Jira auditor, auto-documentation, roadmap generator — that work the data catalog so people don't have to.",
+      "tech": "MCP, Claude API, DataHub",
+      "link": "https://github.com/guido-tomasella"
     },
     {
-      "title": "Project title",
-      "description": "Short description of what it does and the problem it solves.",
-      "tech": "Tech, stack",
-      "link": "https://github.com/guido-tomasella",
-      "placeholder": true
+      "title": "LangGraph RAG System",
+      "description": "A hybrid retrieval engine with self-correcting search and reasoning loops, built to answer real questions about real data.",
+      "tech": "LangGraph, Qdrant, FastAPI",
+      "link": "https://github.com/guido-tomasella"
     },
     {
-      "title": "Project title",
-      "description": "Short description of what it does and the problem it solves.",
-      "tech": "Tech, stack",
-      "link": "https://github.com/guido-tomasella",
-      "placeholder": true
+      "title": "PySpark Data Quality Framework",
+      "description": "The shift from finding bad data after the fact to catching it before it ever reaches a dashboard.",
+      "tech": "PySpark, Python",
+      "link": "https://github.com/guido-tomasella"
     }
   ],
   "contact": {
-    "headline": "Let's build",
+    "headline": "Let's build.",
     "email": "tomasellaguido@hotmail.com",
     "links": [
       { "label": "LinkedIn", "url": "https://linkedin.com/in/guido-tomasella-06222885" },

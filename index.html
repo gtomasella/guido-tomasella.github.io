@@ -16,30 +16,26 @@
     />
   </head>
   <body>
+    <a href="#content" class="skip-link">Skip to content</a>
     <div id="cursor" class="cursor" aria-hidden="true"></div>
     <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
 
-    <!-- WebGL stage (single canvas for the whole journey) -->
-    <div id="webgl"></div>
+    <!-- Persistent WebGL stage behind everything -->
+    <div id="webgl" aria-hidden="true"></div>
     <div class="vignette" aria-hidden="true"></div>
 
     <header class="topbar">
       <a class="brand" href="#hero" aria-label="Guido Tomasella — home">GT</a>
       <nav class="nav">
         <a href="#work">Work</a>
+        <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
       </nav>
       <a class="topbar__cta" href="#contact">Let's talk</a>
     </header>
 
-    <!-- DOM content overlays the canvas; populated from content/content.en.json -->
-    <main id="overlay">
-      <section class="hero" id="hero">
-        <p class="hero__kicker" data-anim></p>
-        <h1 class="hero__name" data-anim></h1>
-        <p class="hero__tagline" data-anim></p>
-      </section>
-    </main>
+    <!-- Scrollable content sections, built from content/content.en.json -->
+    <main id="content"></main>
 
     <div class="scrollcue" aria-hidden="true">
       <span>Scroll</span>
