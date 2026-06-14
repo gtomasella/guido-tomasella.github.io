@@ -55,8 +55,63 @@ body {
 @media (max-width: 680px) { .nav { display: none; } }
 
 /* ---------- panels ---------- */
-.panel { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 14vh clamp(1.5rem, 8vw, 7rem); pointer-events: none; }
+.panel { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0 clamp(1rem, 3vw, 2rem); pointer-events: none; }
 .panel--intro { min-height: 450vh; padding: 0; }
+
+/* ---------- section frame (HUD) ---------- */
+.frame {
+  position: relative;
+  width: min(1240px, 92vw);
+  height: min(80vh, 800px);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: clamp(1.2rem, 2.4vw, 2.2rem) clamp(1.4rem, 3vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.frame__head {
+  display: flex; align-items: center; gap: 1rem;
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  border-bottom: 1px solid var(--line); padding-bottom: 1rem;
+}
+.frame__num { color: var(--accent); }
+.frame__label { color: var(--text-dim); }
+.frame__body {
+  flex: 1; display: grid; grid-template-columns: minmax(280px, 1.05fr) 1.5fr;
+  gap: clamp(1.5rem, 4vw, 4rem); align-items: center;
+}
+.frame__body > * { position: relative; z-index: 1; min-width: 0; }
+.frame__title { font-size: clamp(1.7rem, 3.2vw, 3rem); font-weight: 500; line-height: 1.05; letter-spacing: -0.02em; }
+.frame__intro { color: var(--text-dim); margin-top: 1.1rem; line-height: 1.55; max-width: 38ch; }
+.frame__ghost {
+  position: absolute; right: 1.4rem; bottom: -2.2rem; z-index: 0;
+  font-family: var(--mono); font-weight: 700; font-size: clamp(9rem, 24vw, 20rem);
+  line-height: 1; color: rgba(255, 255, 255, 0.025); pointer-events: none; user-select: none;
+}
+.frame__corner { position: absolute; width: 14px; height: 14px; border: 1px solid var(--accent); opacity: 0.55; }
+.frame__corner--tl { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.frame__corner--tr { top: -1px; right: -1px; border-left: 0; border-bottom: 0; }
+.frame__corner--bl { bottom: -1px; left: -1px; border-right: 0; border-top: 0; }
+.frame__corner--br { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+/* hero frame: name dominant on the left, roles on the right */
+.panel--hero .frame__body { grid-template-columns: 1.7fr 1fr; }
+.roles { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; align-items: flex-end; text-align: right; }
+.roles li { font-family: var(--mono); font-size: clamp(0.9rem, 1.4vw, 1.2rem); color: var(--text); border-right: 2px solid var(--accent); padding-right: 0.9rem; }
+
+/* contact frame: centred */
+.panel--contact .frame__body { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 1.6rem; }
+
+/* projects stage fills the right content cell */
+.frame__content .proj-stage--pinned { height: 100%; min-height: 300px; }
+
+@media (max-width: 860px) {
+  .frame { height: min(86vh, 760px); }
+  .frame__body, .panel--hero .frame__body { grid-template-columns: 1fr; align-content: center; gap: 1.4rem; overflow-y: auto; }
+  .roles { align-items: flex-start; text-align: left; }
+  .roles li { border-right: 0; border-left: 2px solid var(--accent); padding-right: 0; padding-left: 0.9rem; }
+}
 .panel__inner { max-width: 1080px; width: 100%; pointer-events: none; }
 .panel__inner--center { margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.4rem; }
 .panel a, .panel button { pointer-events: auto; }
@@ -75,7 +130,7 @@ body {
 /* two hats */
 .hats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem; margin-top: 1rem; }
 .hat { background: var(--glass); border: 1px solid var(--line); border-radius: 16px; padding: 2rem; backdrop-filter: blur(8px); }
-.hat h2 { font-size: clamp(1.4rem, 2.6vw, 2.1rem); font-weight: 500; margin-bottom: 1.2rem; }
+.hat h3 { font-size: clamp(1.3rem, 2.4vw, 1.9rem); font-weight: 500; margin-bottom: 1.1rem; }
 .hat ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
 .hat li { font-family: var(--mono); font-size: 0.95rem; color: var(--text-dim); padding-left: 1.2rem; position: relative; }
 .hat li::before { content: '–'; position: absolute; left: 0; color: var(--accent); }
