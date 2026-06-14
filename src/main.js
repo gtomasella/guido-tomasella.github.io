@@ -78,33 +78,78 @@ if (reduced) {
     gsap.from(el, { y: 32, opacity: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 86%' } });
   });
 
-  // Pinned "Selected work": the screen holds and each scroll steps to the next project card.
+  // Pinned "Selected work": exactly ONE gesture (a scroll notch or an arrow key) = one card.
+  // The section pins; while active we intercept wheel/keys and step discretely, releasing at the ends.
   if (!small) {
     const stageEl = document.querySelector('.proj-stage');
     const cards = gsap.utils.toArray('.proj-stage .proj');
     if (stageEl && cards.length > 1) {
       stageEl.classList.add('proj-stage--pinned');
       const n = cards.length;
-      let current = 0;
-      gsap.set(cards, { autoAlpha: 0 });
-      gsap.set(cards[0], { autoAlpha: 1, y: 0 });
-      ScrollTrigger.create({
+      let idx = 0;
+      let active = false;
+      let lock = false;
+
+      function syncCards() {
+        cards.forEach((c, i) => gsap.set(c, { autoAlpha: i === idx ? 1 : 0, y: 0 }));
+      }
+      function go(next) {
+        if (next < 0 || next > n - 1 || next === idx) return;
+        const dir = next > idx ? 1 : -1;
+        gsap.to(cards[idx], { autoAlpha: 0, y: -30 * dir, duration: 0.3, ease: 'power2.out' });
+        gsap.fromTo(cards[next], { autoAlpha: 0, y: 30 * dir }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' });
+        idx = next;
+      }
+      syncCards();
+
+      const st = ScrollTrigger.create({
         trigger: '#projects',
         start: 'top top',
-        end: () => `+=${(n - 1) * window.innerHeight * 0.6}`,
+        end: () => `+=${window.innerHeight}`,
         pin: true,
-        scrub: 0.4,
-        snap: { snapTo: 1 / (n - 1), duration: 0.3, ease: 'power1.inOut' },
-        onUpdate: (self) => {
-          // Discrete: switch to the next card only when crossing its threshold.
-          const idx = Math.round(self.progress * (n - 1));
-          if (idx !== current) {
-            const dir = idx > current ? 1 : -1;
-            gsap.to(cards[current], { autoAlpha: 0, y: -24 * dir, duration: 0.25 });
-            gsap.fromTo(cards[idx], { autoAlpha: 0, y: 24 * dir }, { autoAlpha: 1, y: 0, duration: 0.3 });
-            current = idx;
+        anticipatePin: 1,
+        onToggle: (self) => {
+          active = self.isActive;
+          if (active) {
+            idx = self.direction === 1 ? 0 : n - 1;
+            syncCards();
           }
         },
+      });
+
+      const exit = (down) => {
+        active = false;
+        window.scrollTo({ top: down ? st.end + 2 : Math.max(0, st.start - 2), behavior: 'auto' });
+      };
+      const tryStep = (down) => {
+        if (down && idx < n - 1) { go(idx + 1); return true; }
+        if (!down && idx > 0) { go(idx - 1); return true; }
+        return false; // at a boundary -> release the pin
+      };
+
+      window.addEventListener(
+        'wheel',
+        (e) => {
+          if (!active) return;
+          e.preventDefault();
+          if (lock) return;
+          lock = true;
+          setTimeout(() => (lock = false), 650);
+          if (!tryStep(e.deltaY > 0)) exit(e.deltaY > 0);
+        },
+        { passive: false }
+      );
+
+      window.addEventListener('keydown', (e) => {
+        if (!active) return;
+        const down = e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ';
+        const up = e.key === 'ArrowUp' || e.key === 'PageUp';
+        if (!down && !up) return;
+        e.preventDefault();
+        if (lock) return;
+        lock = true;
+        setTimeout(() => (lock = false), 300);
+        if (!tryStep(down)) exit(down);
       });
     }
   }
