@@ -35,7 +35,7 @@ export class SceneManager {
 
     this.scene = new THREE.Scene();
     this.scene.background = this._gradientBackground();
-    this.scene.fog = new THREE.FogExp2(0x05080f, 0.05);
+    this.scene.fog = new THREE.FogExp2(0x0a1114, 0.05);
 
     this.camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
     this.camera.position.set(0, 0, 7.5);
@@ -78,9 +78,9 @@ export class SceneManager {
     c.width = 4; c.height = 512;
     const g = c.getContext('2d');
     const grad = g.createLinearGradient(0, 0, 0, 512);
-    grad.addColorStop(0, '#0c1530');
-    grad.addColorStop(0.45, '#070d1c');
-    grad.addColorStop(1, '#03060d');
+    grad.addColorStop(0, '#14201f');
+    grad.addColorStop(0.45, '#0e1417');
+    grad.addColorStop(1, '#080d0f');
     g.fillStyle = grad;
     g.fillRect(0, 0, 4, 512);
     const tex = new THREE.CanvasTexture(c);
@@ -104,7 +104,7 @@ export class SceneManager {
     this.dust = new THREE.Points(
       g,
       new THREE.PointsMaterial({
-        color: 0x35507a,
+        color: 0x5a4f37,
         size: 0.03,
         sizeAttenuation: true,
         transparent: true,
@@ -137,6 +137,7 @@ export class SceneManager {
   tick() {
     const dt = this.clock.getDelta();
     const t = this.clock.elapsedTime;
+    if (document.hidden) return; // don't render while the tab is backgrounded
     this.controls.update();
     if (!this.reduced) {
       // Lusion-style parallax: rotate the camera VIEW toward the pointer (NOT its position),

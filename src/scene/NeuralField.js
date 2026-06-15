@@ -13,9 +13,9 @@ const VERT = /* glsl */ `
   // Continuous colour flow that also CYCLES between palettes over time.
   // ph = per-particle flow phase, pt = slow palette-cycle phase.
   vec3 paletteFlow(float ph, float pt) {
-    vec3 A0 = vec3(0.13, 0.83, 1.0);  vec3 A1 = vec3(0.49, 0.36, 1.0);  vec3 A2 = vec3(1.0, 0.30, 0.62); // Aurora
-    vec3 B0 = vec3(0.0, 0.95, 0.75);  vec3 B1 = vec3(0.20, 0.55, 1.0);  vec3 B2 = vec3(1.0, 0.82, 0.25); // Plasma
-    vec3 C0 = vec3(1.0, 0.18, 0.59);  vec3 C1 = vec3(0.55, 0.23, 0.93); vec3 C2 = vec3(0.16, 0.83, 1.0); // Synthwave
+    vec3 A0 = vec3(0.89, 0.70, 0.235); vec3 A1 = vec3(0.82, 0.50, 0.18);  vec3 A2 = vec3(0.91, 0.92, 0.86); // Ember
+    vec3 B0 = vec3(0.94, 0.81, 0.48);  vec3 B1 = vec3(0.78, 0.42, 0.16);  vec3 B2 = vec3(0.95, 0.93, 0.87); // Brass
+    vec3 C0 = vec3(1.0, 0.78, 0.34);   vec3 C1 = vec3(0.71, 0.38, 0.11);  vec3 C2 = vec3(0.93, 0.90, 0.84); // Signal
     float k = fract(pt) * 3.0;
     vec3 c0, c1, c2;
     if (k < 1.0)      { float f = k;        c0 = mix(A0, B0, f); c1 = mix(A1, B1, f); c2 = mix(A2, B2, f); }
@@ -255,7 +255,7 @@ export class NeuralField {
       const on = a === this.hovered || b === this.hovered;
       for (let k = 0; k < 2; k++) {
         const idx = (e * 2 + k) * 3;
-        if (on) { c[idx] = 0.13; c[idx + 1] = 0.83; c[idx + 2] = 1.0; }
+        if (on) { c[idx] = 0.94; c[idx + 1] = 0.81; c[idx + 2] = 0.48; }
         else { c[idx] = base[idx]; c[idx + 1] = base[idx + 1]; c[idx + 2] = base[idx + 2]; }
       }
     }

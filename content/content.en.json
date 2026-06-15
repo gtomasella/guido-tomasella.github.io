@@ -10,7 +10,7 @@
     "techLead": { "label": "Tech Lead", "disciplines": ["Data Engineering", "AI"] }
   },
   "graph": {
-    "categories": { "manager": "#22d3ff", "techlead": "#3a86ff", "ai": "#ff6b35" },
+    "categories": { "manager": "#e3b23c", "techlead": "#f0ce7a", "ai": "#d9772e" },
     "nodes": [
       { "label": "Data Governance", "cat": "manager", "hub": true },
       { "label": "Data Quality", "cat": "manager", "hub": true },
@@ -32,10 +32,10 @@
     ]
   },
   "amplifier": [
-    { "branch": "Data Governance", "message": "Policies stop living in slide decks — agents read the catalog, flag drift, and write the documentation themselves." },
-    { "branch": "Data Quality", "message": "Checks run ahead of the pipeline, not after the complaint — rules catch bad data before it ships." },
+    { "branch": "Data Governance", "message": "Agents read the catalog, flag drift, and keep the documentation current, so policy lives in the platform instead of a slide deck." },
+    { "branch": "Data Quality", "message": "Rules run ahead of the pipeline and catch bad data before it ever reaches a dashboard." },
     { "branch": "Data Engineering", "message": "Pipelines that used to need a ticket and a week now get an agent that audits, drafts, and proposes the fix." },
-    { "branch": "AI", "message": "Claude and LangChain aren't side projects — they're teammates wired into governance, roadmaps, and Jira itself." }
+    { "branch": "AI", "message": "Claude and LangChain work as teammates, wired into governance, roadmaps, and Jira itself." }
   ],
   "experience": [
     {
@@ -60,19 +60,19 @@
   "projects": [
     {
       "title": "MCP Data Agents",
-      "description": "A small fleet of autonomous agents — Jira auditor, auto-documentation, roadmap generator — that work the data catalog so people don't have to.",
+      "description": "A small fleet of autonomous agents (Jira auditor, auto documentation, roadmap generator) that work the data catalog so people don't have to.",
       "tech": "MCP, Claude API, DataHub",
       "link": "https://github.com/guido-tomasella"
     },
     {
       "title": "LangGraph RAG System",
-      "description": "A hybrid retrieval engine with self-correcting search and reasoning loops, built to answer real questions about real data.",
+      "description": "A hybrid retrieval engine with self correcting search and reasoning loops, built to answer real questions over production data.",
       "tech": "LangGraph, Qdrant, FastAPI",
       "link": "https://github.com/guido-tomasella"
     },
     {
       "title": "PySpark Data Quality Framework",
-      "description": "The shift from finding bad data after the fact to catching it before it ever reaches a dashboard.",
+      "description": "Data quality checks in PySpark that catch problems before they reach a dashboard.",
       "tech": "PySpark, Python",
       "link": "https://github.com/guido-tomasella"
     }
